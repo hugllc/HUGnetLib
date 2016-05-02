@@ -169,29 +169,29 @@ class DriverTest extends drivers\DriverTestBase
             'extraText' => array(
                 0 => 'Type',
                 1 => 'Priority',
-                2 => 'Capacity'
+                2 => 'Default State'
             ),
             'extraDesc' => array(
                 0 => "The type of this power port",
                 1 => "The priority of this power port",
-                2 => "The capacity of this device"
+                2 => "Whether the port is on or off when the device boots up"
             ),
             'extraDefault' => array(
                 0 => 0,
                 1 => 0,
-                2 => 0
+                2 => 1
             ),
             'extraValues' => array(
                 0 => array(0 => 'None'),
                 1 => array(0 => 'Highest'),
-                2 => 10
+                2 => array(1 => 'On', 0 => 'Off'),
             ),
             'extraNames' => array(
                 'type' => 0,
                 'priority' => 1,
-                'capacity' => 2
+                'defstate' => 2
             ),
-            "chars" => 30,
+            "chars" => 23,
             'port' => '2Z',
             "requires" => array(),
             "provides" => array(),
@@ -416,19 +416,33 @@ class DriverTest extends drivers\DriverTestBase
                 array(
                     "Device" => array(
                         "sensor" => new \HUGnet\DummyBase("Sensor"),
+                    ),
+                    "Sensor" => array(
+                        "get" => array(
+                            "id" => 7,
+                            "extra" => array(1, 2, 0x11223344),
+                            "location" => "ABCDEFGHIJKLMNOPQRSTUVXYZ",
+                        ),
+                        "table" => new \HUGnet\DummyTable("Table"),
+                    ),
+                    "Table" => array(
+                        "get" => array(
+                            "tableEntry" => array(),
+                        ),
                     )
                 ),
-                "0102010203044142434445464748494A00",
+                "0102444142434445464748494A4B4C4D4E4F5051525354555600FFFFFFFFFFFF"
+                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
                 array(
-                    'Sensor' => array(
-                        'get' => array(
-                            0 => array('extra'),
-                        ),
-                        'set' => array(
-                            0 => array('location', "ABCDEFGHIJ"),
-                            1 => array('extra', array(1, 2, 0x04030201)),
-                        ),
+                    'get' => array(
+                        0 => array('extra'),
                     ),
+                    'set' => array(
+                        0 => array('location', ""),
+                        1 => array('extra', array(1, 2, 68)),
+                    ),
+                    'table' => array(array(), array(), array()),
                 ),
             ),
         );
@@ -450,7 +464,7 @@ class DriverTest extends drivers\DriverTestBase
         $sensor->resetMock($mocks);
         $obj = Driver::factory("DriverTestClass", $sensor);
         $obj->decode($string);
-        $ret = $sensor->retrieve();
+        $ret = $sensor->retrieve("Sensor");
         $this->assertEquals($expect, $ret);
     }
     /**
@@ -469,9 +483,17 @@ class DriverTest extends drivers\DriverTestBase
                             "extra" => array(1, 2, 0x11223344),
                             "location" => "ABCDEFGHIJKLMNOPQRSTUVXYZ",
                         ),
+                        "table" => new \HUGnet\DummyTable("Table"),
+                    ),
+                    "Table" => array(
+                        "get" => array(
+                            "tableEntry" => array(),
+                        ),
                     ),
                 ),
-                "0102443322114142434445464748494A4B4C4D4E4F5051525354555658595A00",
+                "0102444142434445464748494A4B4C4D4E4F5051525354555600FFFFFFFFFFFF"
+                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                    ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
             ),
         );
     }

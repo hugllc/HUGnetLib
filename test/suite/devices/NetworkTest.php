@@ -48,7 +48,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyDeviceDriver.php';
 /** This is a required class */
-require_once CODE_BASE.'db/tables/Firmware.php';
+require_once CODE_BASE.'devices/Firmware.php';
 
 
 
@@ -125,7 +125,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -181,7 +181,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -237,7 +237,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -336,7 +336,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -392,7 +392,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -488,7 +488,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -544,7 +544,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -641,7 +641,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -706,7 +706,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -807,7 +807,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -955,7 +955,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1100,7 +1100,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1149,7 +1149,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1190,7 +1190,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1276,7 +1276,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1333,7 +1333,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1382,7 +1382,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1475,7 +1475,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                         ),
                         "encodeRTC" => array(
                             array(0x12345678),
@@ -1568,7 +1568,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1614,7 +1614,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1655,7 +1655,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1738,7 +1738,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1784,7 +1784,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1825,7 +1825,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -1908,7 +1908,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                         ),
@@ -1953,7 +1953,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                         ),
@@ -1994,7 +1994,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                         ),
@@ -2077,7 +2077,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2122,7 +2122,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2163,7 +2163,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2248,7 +2248,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2298,7 +2298,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2355,7 +2355,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
-                            "AddressSize" => 3,
+                            "Address32" => 3,
                             "useCRC" => false,
                         ),
                     ),
@@ -2375,7 +2375,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2406,7 +2406,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
-                            "AddressSize" => 2,
+                            "Address32" => 2,
                             "useCRC" => false,
                         ),
                     ),
@@ -2426,7 +2426,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2457,7 +2457,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
-                            "AddressSize" => 3,
+                            "Address32" => 3,
                             "useCRC" => false,
                         ),
                     ),
@@ -2477,7 +2477,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2567,7 +2567,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2617,7 +2617,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2747,7 +2747,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2844,7 +2844,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -2941,7 +2941,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -3143,7 +3143,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -3240,7 +3240,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -3337,7 +3337,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("id"),
                             array("useCRC"),
                             array("packetTimeout"),
@@ -3523,7 +3523,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                \HUGnet\db\Table::factory(
+                \HUGnet\devices\Firmware::factory(
                     $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
@@ -3556,7 +3556,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("HWPartNum"),
                             array("id"),
                             array("useCRC"),
@@ -3604,7 +3604,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                \HUGnet\db\Table::factory(
+                \HUGnet\devices\Firmware::factory(
                     $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
@@ -3637,7 +3637,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("HWPartNum"),
                             array("id"),
                             array("useCRC"),
@@ -3718,7 +3718,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                \HUGnet\db\Table::factory(
+                \HUGnet\devices\Firmware::factory(
                     $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
@@ -3751,7 +3751,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("HWPartNum"),
                             array("id"),
                             array("useCRC"),
@@ -3884,7 +3884,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                \HUGnet\db\Table::factory(
+                \HUGnet\devices\Firmware::factory(
                     $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
@@ -3917,7 +3917,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("HWPartNum"),
                             array("id"),
                             array("useCRC"),
@@ -4112,7 +4112,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                \HUGnet\db\Table::factory(
+                \HUGnet\devices\Firmware::factory(
                     $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
@@ -4145,7 +4145,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("HWPartNum"),
                             array("id"),
                             array("useCRC"),
@@ -4382,7 +4382,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                \HUGnet\db\Table::factory(
+                \HUGnet\devices\Firmware::factory(
                     $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
@@ -4415,7 +4415,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("HWPartNum"),
                             array("id"),
                             array("useCRC"),
@@ -4674,7 +4674,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                \HUGnet\db\Table::factory(
+                \HUGnet\devices\Firmware::factory(
                     $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
@@ -4707,7 +4707,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("HWPartNum"),
                             array("id"),
                             array("useCRC"),
@@ -4962,7 +4962,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                \HUGnet\db\Table::factory(
+                \HUGnet\devices\Firmware::factory(
                     $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
@@ -4988,7 +4988,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("HWPartNum"),
                             array("id"),
                             array("useCRC"),
@@ -5199,7 +5199,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                \HUGnet\db\Table::factory(
+                \HUGnet\devices\Firmware::factory(
                     $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
@@ -5233,7 +5233,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("HWPartNum"),
                             array("id"),
                             array("useCRC"),
@@ -5460,7 +5460,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                \HUGnet\db\Table::factory(
+                \HUGnet\devices\Firmware::factory(
                     $system,
                     array(
                         "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008"
@@ -5493,7 +5493,7 @@ S9030000FC",
                 array(
                     "Device" => array(
                         "get" => array(
-                            array("AddressSize"),
+                            array("Address32"),
                             array("HWPartNum"),
                             array("id"),
                             array("useCRC"),
@@ -5675,7 +5675,7 @@ S9030000FC",
                         ),
                     ),
                 ),
-                \HUGnet\db\Table::factory(
+                \HUGnet\devices\Firmware::factory(
                     $system,
                     array(),
                     "Firmware"

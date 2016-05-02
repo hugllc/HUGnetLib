@@ -113,7 +113,7 @@ class XMegaChargeTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                0.00840
+                5.0
             ),
             array(
                 array(
@@ -164,7 +164,7 @@ class XMegaChargeTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                0.0175
+                10.4
             ),
         );
     }
@@ -191,7 +191,7 @@ class XMegaChargeTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                0.00840
+                5.0
             ),
             array(
                 array(
@@ -242,7 +242,7 @@ class XMegaChargeTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                0.0175
+                10.4
             ),
         );
     }
