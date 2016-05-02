@@ -98,8 +98,8 @@ class Network
         $this->_system = &$system;
         $this->_driver  = &$driver;
         $this->_device  = &$device;
-        $digits = $this->_device->get("AddressSize");
-        $this->_address_size = (is_int($digits) && ($digits > 0)) ? $digits * 2 : $this->_address_size;
+        $addr32 = $this->_device->get("Address32");
+        $this->_address_size = ($addr32) ? 8 : 4;
 
     }
     /**

@@ -80,7 +80,7 @@ class E10460200 extends \HUGnet\devices\Driver
         "ProcessTables" => 0,
         "PowerTables" => 8,
         "inputSize" => 2,
-        "AddressSize" => 3,
+        "Address32" => true,
         "fixed" => array(
             "InputTables" => true, 
             "OutputTables" => true, 
