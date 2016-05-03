@@ -159,7 +159,7 @@ class BatStatusTest extends DriverTestBase
         return array(
             array(
                 0x3003, "BatStatus", "RawStatus", \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                true, 'Online (Bulk Charge)'
+                true, 'Online (Absorption Charge)'
             ),
             array(
                 0x0036, "BatStatus", "RawStatus", \HUGnet\devices\datachan\Driver::TYPE_RAW,

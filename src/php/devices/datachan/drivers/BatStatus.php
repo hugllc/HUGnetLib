@@ -70,12 +70,14 @@ class BatStatus extends \HUGnet\devices\datachan\Driver
     private $_batstat = array(
         1 => "Offline",
         2 => "Float Charge",
-        3 => "Bulk Charge",
+        3 => "Absorption Charge",
         4 => "Unknown",
         5 => "Error",
         6 => "Discharging",
         7 => "Empty",
         8 => "Testing",
+        9 => "Bulk Charge",
+        10 => "Auto Finish Charge"
     );
     /** @var These are the statuses */
     private $_errors = array(
