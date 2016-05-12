@@ -52,6 +52,8 @@ class Util
 {
     /** This is the polynomial for the CRC-8-CCITT  */
     private static $_poly = 0x07;
+    /** This is the polynomial for the CRC-32  */
+    private static $_crc32_poly = 0xEDB88320;
     /**
     * This function gives us access to the table class
     *
@@ -155,6 +157,48 @@ class Util
             }
             $crc = $crc & 0xFF;
         }
+    }
+    /**
+    * Returns the CRC8 of the packet
+    *
+    * @param string $string The string to get the CRC of.
+    *
+    * @return byte The total CRC
+    */
+    public static function crc32($string)
+    {
+        $pkt = str_split($string, 2);
+        $crc = 0;
+        foreach ($pkt as $value) {
+            self::crc32_update($crc, hexdec($value));
+        }
+        printf("%X\r\n", $crc);
+        return $crc;
+    }
+
+    private static function _logical_right_shift( $int , $shft ) {
+        return ( $int >> $shft )   //Arithmetic right shift
+            & ( PHP_INT_MAX >> ( $shft - 1 ) );   //Deleting unnecessary bits
+    }
+    /**
+    * @brief Computes a 32 bit CRC
+    *
+    * @param int &$crc The CRC as calculated so far
+    * @param int $byte The byte to add to the CRC
+    *
+    * @returns Computed 32 bit CRC
+    */
+    public static function crc32_update(&$crc, $byte)
+    {
+        $crc ^= ((int)$byte & 0xFF);
+        for ($i = 0; $i < 8; ++$i) {
+            if ($crc & 1) {
+                $crc = self::_logical_right_shift($crc, 1) ^ self::$_crc32_poly;
+            } else {
+                $crc = self::_logical_right_shift($crc, 1);
+            }
+        }
+        return $crc & 0xFFFFFFFF;
     }
 
     /**

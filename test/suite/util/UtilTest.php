@@ -150,6 +150,34 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($expect, Util::crc8($preload));
     }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataCrc32()
+    {
+        return array(
+            array(
+                "E100CAFEDEADBEEFCAFE",
+                0x8FF2832E,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $preload The string to give to the class
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataCrc32()
+    */
+    public function testCrc32($preload, $expect)
+    {
+        $this->assertSame($expect, Util::crc32($preload));
+    }
 
 }
 ?>
