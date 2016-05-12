@@ -346,7 +346,7 @@ final class Serial implements PhysicalInterface
     */
     private function _write($string)
     {
-        if ($this->_txWait < microtime(true)) { 
+        if ($this->_txWait < microtime(true)) {
             $this->_system->out(
                 $this->_config["name"]."(".$this->_config["driver"].") <- ".$string,
                 6
@@ -397,7 +397,12 @@ final class Serial implements PhysicalInterface
     public function write($string)
     {
         $this->_connect();
-        return (int)$this->_write((string)$string);
+        $count = 0;
+        $parts = str_split((string)$string, 128);
+        foreach ($parts as $part) {
+            $count += (int)$this->_write($part);
+        }
+        return $count;
     }
     /**
     * Reads from the socket

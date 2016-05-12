@@ -124,6 +124,7 @@ final class Packet implements PacketInterface
         "REPLY" => 0x01,
         "PING" => 0x02,
         "FINDPING" => 0x03,
+        "JUMBO" => 0x04,
         "GETCRC" => 0x06,
         "SETCRC" => 0x07,
         "BOOT" => 0x08,
@@ -213,10 +214,14 @@ final class Packet implements PacketInterface
     private function _fromString($string)
     {
         $string = $this->_cleanPktStr(strtoupper($string));
-        $this->command(substr($string, self::COMMAND, 2));
+        $command = substr($string, self::COMMAND, 2);
+        $this->command($command);
         $this->to(substr($string, self::TO, 6));
         $this->from(substr($string, self::FROM, 6));
         $length = hexdec(substr($string, self::LENGTH, 2)) * 2;
+        if ($command == "04") {
+            $length <<= 4;
+        }
         $this->data(substr($string, self::DATA, $length));
         $this->_setField("_checksum", substr($string, (self::DATA + $length), 2));
         $this->_whole = strlen($string) >= (self::DATA + $length + 2);
@@ -469,7 +474,11 @@ final class Packet implements PacketInterface
     */
     public function length()
     {
-        return sprintf("%02X", count($this->_data));
+        $length = count($this->_data);
+        if ($this->command() == "04") {
+            $length >>= 4;
+        }
+        return sprintf("%02X", $length);
     }
     /**
     * Returns the packet length
