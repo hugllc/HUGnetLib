@@ -163,7 +163,7 @@ class XMegaStatusTest extends DriverTestBase
             ),
             array(
                 0x0014, "BatStatus", "RawStatus", \HUGnet\devices\datachan\Driver::TYPE_RAW,
-                true, 'Offline - Error: Overcurrent'
+                true, 'Offline - Error: Waiting for Calibration'
             ),
         );
     }

@@ -113,7 +113,7 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                10.3078
+                10.2589
             ),
             array(
                 array(
@@ -164,7 +164,7 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                21.1103,
+                21.0103,
             ),
         );
     }
@@ -191,7 +191,7 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                10.3027
+                10.2589
             ),
             array(
                 array(
@@ -242,7 +242,7 @@ class XMegaVoltageTest extends DriverTestBaseAVR
                     "timeConstant" => 1,
                 ),
                 array(),
-                21.1103,
+                21.0103,
             ),
         );
     }

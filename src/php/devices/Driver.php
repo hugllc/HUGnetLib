@@ -93,7 +93,7 @@ abstract class Driver
         "DigitalOutputs" => array(),
         "DaughterBoards" => array("" => "None"),
         "setConfig" => true,
-        "AddressSize" => 2,
+        "Address32" => false,
         "fixed" => false,
         "useCRC" => false,
     );

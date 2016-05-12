@@ -151,7 +151,7 @@ class BatStatusTest extends DriverTestBase
                         ),
                     ),
                 ),
-                "0430",
+                "04300000",
                 1,
                 array(
                     "timeConstant" => 1,

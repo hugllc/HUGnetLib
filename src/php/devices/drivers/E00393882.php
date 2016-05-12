@@ -78,7 +78,7 @@ class E00393882 extends \HUGnet\devices\Driver
         "OutputTables" => 0,
         "ProcessTables" => 0,
         "DataChannels" => 0,
-        "AddressSize" => 3,
+        "Address32" => true,
     );
 
 }

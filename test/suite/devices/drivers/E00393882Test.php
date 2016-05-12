@@ -109,8 +109,8 @@ class E00393882Test extends DriverTestBase
                 0,
             ),
             array(
-                "AddressSize",
-                3,
+                "Address32",
+                true,
             ),
         );
     }

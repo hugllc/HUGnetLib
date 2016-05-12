@@ -81,6 +81,7 @@ class LeadAcidBatteryTable
         "MinimumVoltage",
         "NominalCapacity",
         "NominalVoltage",
+        "MaxChargeCurrent"
     );
     /**
     * This is where we setup the power object
@@ -205,6 +206,16 @@ class LeadAcidBatteryTable
             'bytes' => 4,
             'min' => 0,
             'max' => 18000,
+        ),
+        "MaxChargeCurrent" => array(
+            "value" => 75000,
+            'signed' => false,
+            "desc"  => "Maximum Charge Current (mA)",
+            'longDesc' => "The maximum charge current that is allowed. (mA)",
+            'size'  => 6,
+            'bytes' => 4,
+            'min' => 0,
+            'max' => 75000,
         ),
     );
     /**

@@ -78,7 +78,6 @@ class E10460901 extends \HUGnet\devices\Driver
         "ProcessTables" => 0,
         "PowerTables" => 0,
         "inputSize" => 4,
-        "AddressSize" => 2,
         "Role" => "BatSocComm",
         "fixed" => array(
             "InputTables" => true,
