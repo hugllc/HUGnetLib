@@ -59,7 +59,7 @@ require_once dirname(__FILE__)."/../../base/LoadableDriver.php";
  */
 abstract class Driver extends \HUGnet\base\LoadableDriver
 {
-    const POWERPORTSIZE = 0x50;
+    const POWERPORTSIZE = 0x70;
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
