@@ -127,8 +127,16 @@ class Mysql extends \HUGnet\db\Driver implements \HUGnet\interfaces\DBDriver
         } else {
             $this->query .= " NOT NULL";
         }
-        if (!is_null($column["Default"])) {
-            $this->query .= " DEFAULT ".$this->pdo()->quote($column["Default"]);
+        $type = strtoupper($column["Type"]);
+        $nodefault = array(
+            "TINYBLOB", "BLOB", "MEDIUMBLOB", "LONGBLOB",
+            "TINYTEXT", "TEXT", "MEDIUMTEXT", "LONGTEXT",
+            "JSON", "GEOMETRY"
+        );
+        if (!in_array($type, $nodefault)) {
+            if (!is_null($column["Default"])) {
+                $this->query .= " DEFAULT ".$this->pdo()->quote($column["Default"]);
+            }
         }
     }
     /**
