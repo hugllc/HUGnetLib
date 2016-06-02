@@ -162,13 +162,14 @@ class Util
     * Returns the CRC8 of the packet
     *
     * @param string $string The string to get the CRC of.
+    * @param int    $start  The starting value
     *
     * @return byte The total CRC
     */
-    public static function crc32($string)
+    public static function crc32($string, $start = 0)
     {
         $pkt = str_split($string, 2);
-        $crc = 0;
+        $crc = $start;
         foreach ($pkt as $value) {
             self::crc32_update($crc, hexdec($value));
         }

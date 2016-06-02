@@ -161,6 +161,12 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             array(
                 "E100CAFEDEADBEEFCAFE",
                 0x938714A7,
+                0
+            ),
+            array(
+                "E100CAFEDEADBEEFCAFE",
+                0x8FF2832E,
+                0xFFFFFFFF
             ),
         );
     }
@@ -174,9 +180,9 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataCrc32()
     */
-    public function testCrc32($preload, $expect)
+    public function testCrc32($preload, $expect, $start)
     {
-        $this->assertSame($expect, Util::crc32($preload));
+        $this->assertSame($expect, Util::crc32($preload, $start));
     }
 
 }
