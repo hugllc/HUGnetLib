@@ -160,7 +160,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 "E100CAFEDEADBEEFCAFE",
-                0x8FF2832E,
+                0x938714A7,
             ),
         );
     }

@@ -172,7 +172,6 @@ class Util
         foreach ($pkt as $value) {
             self::crc32_update($crc, hexdec($value));
         }
-        printf("%X\r\n", $crc);
         return $crc;
     }
 
@@ -193,9 +192,9 @@ class Util
         $crc ^= ((int)$byte & 0xFF);
         for ($i = 0; $i < 8; ++$i) {
             if ($crc & 1) {
-                $crc = self::_logical_right_shift($crc, 1) ^ self::$_crc32_poly;
+                $crc = (($crc >> 1) & 0x7FFFFFFF) ^ self::$_crc32_poly;
             } else {
-                $crc = self::_logical_right_shift($crc, 1);
+                $crc = (($crc >> 1) & 0x7FFFFFFF);
             }
         }
         return $crc & 0xFFFFFFFF;
