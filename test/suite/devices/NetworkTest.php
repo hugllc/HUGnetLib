@@ -1741,7 +1741,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1754,7 +1753,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 4,
+                                    "timeout" => 10,
                                 ),
                             )
                         ),
@@ -1787,7 +1786,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1800,7 +1798,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 4,
+                                    "timeout" => 10,
                                 ),
                             )
                         ),
@@ -1828,7 +1826,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -1841,7 +1838,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 4,
+                                    "timeout" => 10,
                                 ),
                             )
                         ),
@@ -1911,6 +1908,12 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("useCRC"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("useCRC"),
                         ),
                     ),
                     "Network" => array(
@@ -1923,8 +1926,33 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 1,
+                                    "timeout" => 4,
+                                    "NoReply" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                    "CRC" => false,
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                    "NoReply" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                    "CRC" => false,
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 0.5,
                                     "find" => false,
+                                    "tries" => 5
                                 ),
                             )
                         ),
@@ -1956,6 +1984,12 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("useCRC"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("useCRC"),
                         ),
                     ),
                     "Network" => array(
@@ -1968,8 +2002,33 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 1,
+                                    "timeout" => 4,
+                                    "NoReply" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                    "CRC" => true,
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                    "NoReply" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                    "CRC" => true,
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 0.5,
                                     "find" => false,
+                                    "tries" => 5
                                 ),
                             )
                         ),
@@ -1997,6 +2056,12 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("useCRC"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("useCRC"),
                         ),
                     ),
                     "Network" => array(
@@ -2009,8 +2074,33 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 1,
+                                    "timeout" => 4,
+                                    "NoReply" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                    "CRC" => false,
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                    "NoReply" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                    "CRC" => false,
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 0.5,
                                     "find" => false,
+                                    "tries" => 5
                                 ),
                             )
                         ),
@@ -2080,7 +2170,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2093,7 +2182,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 4,
+                                    "timeout" => 10,
                                 ),
                             )
                         ),
@@ -2125,7 +2214,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2138,7 +2226,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 4,
+                                    "timeout" => 10,
                                 ),
                             )
                         ),
@@ -2166,7 +2254,6 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                         ),
                     ),
                     "Network" => array(
@@ -2179,7 +2266,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 4,
+                                    "timeout" => 10,
                                 ),
                             )
                         ),
@@ -2223,13 +2310,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public static function dataWriteFlash()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => true,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2273,13 +2361,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
             ),
-            array(
+            array( // #1
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2323,13 +2412,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 true,
             ),
-            array(
+            array(  // #2
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2349,13 +2439,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
             ),
-            array(
+            array( // #3
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
-                            "Address32" => 3,
+                            "Address32" => true,
                             "useCRC" => false,
                         ),
                     ),
@@ -2387,7 +2477,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
-                                    "Data" => "001234ABCDEF",
+                                    "Data" => "00001234ABCDEF",
                                     'CRC' => false,
                                 ),
                                 null,
@@ -2406,7 +2496,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
-                            "Address32" => 2,
+                            "Address32" => true,
                             "useCRC" => false,
                         ),
                     ),
@@ -2438,7 +2528,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
-                                    "Data" => "123456ABCDEF",
+                                    "Data" => "00123456ABCDEF",
                                     'CRC' => false,
                                 ),
                                 null,
@@ -2457,7 +2547,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
-                            "Address32" => 3,
+                            "Address32" => true,
                             "useCRC" => false,
                         ),
                     ),
@@ -2489,7 +2579,58 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     "To" => 21,
                                     "Command" => 'WRITE_FLASH',
-                                    "Data" => "123456ABCDEF",
+                                    "Data" => "00123456ABCDEF",
+                                    'CRC' => false,
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 4,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            "id" => 21,
+                            "packetTimeout" => 4,
+                            "useCRC" => false,
+                            "Address32" => false,
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\packets\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "669EEC88",
+                            )
+                        ),
+                    ),
+                ),
+                0x1234,
+                "ABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEF",
+                null,
+                array(),
+                array(
+                    "Device" => array(
+                        "get" => array(
+                            array("Address32"),
+                            array("id"),
+                            array("useCRC"),
+                            array("packetTimeout"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "1234ABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEF",
                                     'CRC' => false,
                                 ),
                                 null,
@@ -2549,6 +2690,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2599,6 +2741,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2648,6 +2791,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2708,13 +2852,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public static function dataWriteFlashBuffer()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2750,13 +2895,25 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
+                        ),
+                        "getParam" => array(
+                            array("ProgramLock"),
+                            array("ProgramLock"),
+                            array("ProgramLock"),
+                        ),
+                        "setParam" => array(
+                            array("ProgramLock", 60),
+                            array("ProgramLock", 60),
+                            array("ProgramLock", 60),
+                        ),
+                        "store" => array(
+                            array(),
+                            array(),
+                            array(),
                         ),
                     ),
                     "Network" => array(
@@ -2771,7 +2928,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                             array(
@@ -2784,7 +2941,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                             array(
@@ -2797,7 +2954,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                         ),
@@ -2805,13 +2962,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 true,
             ),
-            array(
+            array( // #1
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2847,13 +3005,29 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
+                            array("id"),
+                            array("useCRC"),
+                            array("id"),
+                            array("useCRC"),
+                        ),
+                        "getParam" => array(
+                            array("ProgramLock"),
+                            array("ProgramLock"),
+                            array("ProgramLock"),
+                        ),
+                        "setParam" => array(
+                            array("ProgramLock", 60),
+                            array("ProgramLock", 60),
+                            array("ProgramLock", 60),
+                        ),
+                        "store" => array(
+                            array(),
+                            array(),
+                            array(),
                         ),
                     ),
                     "Network" => array(
@@ -2868,7 +3042,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                             array(
@@ -2881,7 +3055,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                             array(
@@ -2894,21 +3068,49 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "100C0C0D0E0FFFFF",
+                                    'CRC' => false,
+                                ),
+                                null,
+                                array(
+                                    "find" => false,
+                                    "timeout" => 5,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "100C0C0D0E0FFFFF",
+                                    'CRC' => false,
+                                ),
+                                null,
+                                array(
+                                    "find" => false,
+                                    "timeout" => 5,
+                                ),
+
                             ),
                         ),
                     ),
                 ),
                 false,
             ),
-            array(
+            array(  // #2
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -2944,10 +3146,24 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
+                            array("id"),
+                            array("useCRC"),
+                            array("id"),
+                            array("useCRC"),
+                        ),
+                        "getParam" => array(
+                            array("ProgramLock"),
+                            array("ProgramLock"),
+                        ),
+                        "setParam" => array(
+                            array("ProgramLock", 60),
+                            array("ProgramLock", 60),
+                        ),
+                        "store" => array(
+                            array(),
+                            array(),
                         ),
                     ),
                     "Network" => array(
@@ -2962,7 +3178,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                             array(
@@ -2975,7 +3191,33 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "1006060708090A0B",
+                                    'CRC' => false,
+                                ),
+                                null,
+                                array(
+                                    "find" => false,
+                                    "timeout" => 5,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "1006060708090A0B",
+                                    'CRC' => false,
+                                ),
+                                null,
+                                array(
+                                    "find" => false,
+                                    "timeout" => 5,
                                 ),
                             ),
                         ),
@@ -2983,13 +3225,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
             ),
-            array(
+            array( // #3
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -3023,13 +3266,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 true,
             ),
-            array(
+            array(  // #4
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -3104,13 +3348,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public static function dataWriteE2Buffer()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => true,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -3146,13 +3391,25 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
+                        ),
+                        "getParam" => array(
+                            array("ProgramLock"),
+                            array("ProgramLock"),
+                            array("ProgramLock"),
+                        ),
+                        "setParam" => array(
+                            array("ProgramLock", 60),
+                            array("ProgramLock", 60),
+                            array("ProgramLock", 60),
+                        ),
+                        "store" => array(
+                            array(),
+                            array(),
+                            array(),
                         ),
                     ),
                     "Network" => array(
@@ -3167,7 +3424,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                             array(
@@ -3180,7 +3437,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                             array(
@@ -3193,7 +3450,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                         ),
@@ -3201,13 +3458,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 true,
             ),
-            array(
+            array(  // #1
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -3243,13 +3501,29 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
+                            array("id"),
+                            array("useCRC"),
+                            array("id"),
+                            array("useCRC"),
+                        ),
+                        "getParam" => array(
+                            array("ProgramLock"),
+                            array("ProgramLock"),
+                            array("ProgramLock"),
+                        ),
+                        "setParam" => array(
+                            array("ProgramLock", 60),
+                            array("ProgramLock", 60),
+                            array("ProgramLock", 60),
+                        ),
+                        "store" => array(
+                            array(),
+                            array(),
+                            array(),
                         ),
                     ),
                     "Network" => array(
@@ -3264,7 +3538,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                             array(
@@ -3277,7 +3551,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                             array(
@@ -3290,7 +3564,33 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "100C0C0D0E0FFFFF",
+                                    "CRC" => false,
+                                ),
+                                null,
+                                array(
+                                    "find" => false,
+                                    "timeout" => 5,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "100C0C0D0E0FFFFF",
+                                    "CRC" => false,
+                                ),
+                                null,
+                                array(
+                                    "find" => false,
+                                    "timeout" => 5,
                                 ),
                             ),
                         ),
@@ -3298,13 +3598,14 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 false,
             ),
-            array(
+            array( // #2
                 array(
                     "Device" => array(
                         "get" => array(
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -3340,10 +3641,24 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             array("Address32"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
                             array("id"),
                             array("useCRC"),
-                            array("packetTimeout"),
+                            array("id"),
+                            array("useCRC"),
+                            array("id"),
+                            array("useCRC"),
+                        ),
+                        "getParam" => array(
+                            array("ProgramLock"),
+                            array("ProgramLock"),
+                        ),
+                        "setParam" => array(
+                            array("ProgramLock", 60),
+                            array("ProgramLock", 60),
+                        ),
+                        "store" => array(
+                            array(),
+                            array(),
                         ),
                     ),
                     "Network" => array(
@@ -3358,7 +3673,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
                                 ),
                             ),
                             array(
@@ -3371,7 +3686,33 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                 null,
                                 array(
                                     "find" => false,
-                                    "timeout" => 4,
+                                    "timeout" => 5,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "1006060708090A0B",
+                                    "CRC" => false,
+                                ),
+                                null,
+                                array(
+                                    "find" => false,
+                                    "timeout" => 5,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "1006060708090A0B",
+                                    "CRC" => false,
+                                ),
+                                null,
+                                array(
+                                    "find" => false,
+                                    "timeout" => 5,
                                 ),
                             ),
                         ),
@@ -3386,6 +3727,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "id" => 21,
                             "packetTimeout" => 4,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -3498,7 +3840,8 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     */
     public static function dataLoadFirmware()
     {
-        $system = new \HUGnet\DummySystem("System");
+        $system = \HUGnet\System::factory();
+        $dev = new \HUGnet\DummySystem("Device");
         return array(
             array( // #0 Not running boot loader
                 array(
@@ -3509,6 +3852,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                         "decode" => true,
                     ),
@@ -3550,7 +3894,8 @@ S9030000FC",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     ),
-                    "Firmware"
+                    "Firmware",
+                    $dev
                 ),
                 true,
                 array(
@@ -3558,6 +3903,12 @@ S9030000FC",
                         "get" => array(
                             array("Address32"),
                             array("HWPartNum"),
+                            array("id"),
+                            array("useCRC"),
+                            array("packetTimeout"),
+                            array("id"),
+                            array("useCRC"),
+                            array("packetTimeout"),
                             array("id"),
                             array("useCRC"),
                         ),
@@ -3572,8 +3923,33 @@ S9030000FC",
                                 ),
                                 null,
                                 array(
-                                    "timeout" => 1,
+                                    "timeout" => 2,
+                                    "NoReply" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                    'CRC' => false,
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 2,
+                                    "NoReply" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                    'CRC' => false,
+                                ),
+                                null,
+                                array(
+                                    "timeout" => 0.5,
                                     "find" => false,
+                                    "tries" => 5,
                                 ),
                             )
                         ),
@@ -3581,6 +3957,7 @@ S9030000FC",
                 ),
                 false,
             ),
+            /*
             array( // #1 No reply to config
                 array(
                     "Device" => array(
@@ -3590,6 +3967,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                         "decode" => true,
                     ),
@@ -3631,7 +4009,9 @@ S9030000FC",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     ),
-                    "Firmware"
+                    "Firmware",
+                    $dev
+
                 ),
                 true,
                 array(
@@ -3685,6 +4065,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                             "useCRC" => true,
+                            "Address32" => false,
                         ),
                         "decode" => true,
                     ),
@@ -3745,7 +4126,9 @@ S9030000FC",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     ),
-                    "Firmware"
+                    "Firmware",
+                    $dev
+
                 ),
                 true,
                 array(
@@ -3827,6 +4210,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                         "decode" => true,
                     ),
@@ -3911,7 +4295,9 @@ S9030000FC",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     ),
-                    "Firmware"
+                    "Firmware",
+                    $dev
+
                 ),
                 true,
                 array(
@@ -4037,6 +4423,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                         "decode" => true,
                     ),
@@ -4139,7 +4526,9 @@ S9030000FC",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     ),
-                    "Firmware"
+                    "Firmware",
+                    $dev
+
                 ),
                 true,
                 array(
@@ -4301,6 +4690,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                         "decode" => true,
                     ),
@@ -4409,7 +4799,9 @@ S9030000FC",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     ),
-                    "Firmware"
+                    "Firmware",
+                    $dev
+
                 ),
                 true,
                 array(
@@ -4586,6 +4978,7 @@ S9030000FC",
                             "packetTimeout" => 2,
                             "fixed" => true,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                         "decode" => true,
                     ),
@@ -4701,7 +5094,9 @@ S9030000FC",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     ),
-                    "Firmware"
+                    "Firmware",
+                    $dev
+
                 ),
                 true,
                 array(
@@ -4898,6 +5293,7 @@ S9030000FC",
                             "fixed" => true,
                             "packetTimeout" => 2,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                         "decode" => true,
                     ),
@@ -4982,7 +5378,9 @@ S9030000FC",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     ),
-                    "Firmware"
+                    "Firmware",
+                    $dev
+
                 ),
                 true,
                 array(
@@ -5135,6 +5533,7 @@ S9030000FC",
                             "fixed" => "true",
                             "packetTimeout" => 2,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                         "decode" => true,
                     ),
@@ -5227,7 +5626,9 @@ S9030000FC",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     ),
-                    "Firmware"
+                    "Firmware",
+                    $dev
+
                 ),
                 false,
                 array(
@@ -5379,6 +5780,7 @@ S9030000FC",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
                             "useCRC" => false,
+                            "Address32" => false,
                         ),
                         "decode" => true,
                     ),
@@ -5487,7 +5889,9 @@ S9030000FC",
                         "RelStatus" => \HUGnet\db\tables\Firmware::RELEASE,
 
                     ),
-                    "Firmware"
+                    "Firmware",
+                    $dev
+
                 ),
                 true,
                 array(
@@ -5662,6 +6066,7 @@ S9030000FC",
                             "HWPartNum" => "0039-21-01-A",
                             "FWPartNum" => "0039-20-01-C",
                             "packetTimeout" => 2,
+                            "Address32" => false,
                         ),
                     ),
                     "Network" => array(
@@ -5678,13 +6083,16 @@ S9030000FC",
                 \HUGnet\devices\Firmware::factory(
                     $system,
                     array(),
-                    "Firmware"
+                    "Firmware",
+                    $dev
+
                 ),
                 true,
                 array(
                 ),
                 false,
             ),
+            */
         );
     }
     /**

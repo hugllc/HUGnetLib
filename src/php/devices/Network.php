@@ -858,8 +858,18 @@ class Network
             $write .= $data;
             $reply = $this->_sendPkt($command, $callback, $config, $write);
             if (is_object($reply)) {
-                if (strtoupper($reply->Reply()) === strtoupper($data)) {
-                    return true;
+                if (strlen($reply->Reply()) == 8) {
+                    $crc = 0;
+                    foreach(str_split($reply->Reply(), 2) as $key => $value) {
+                        $crc += (hexdec($value) << (8 * $key));
+                    }
+                    if (\HUGnet\Util::crc32($data, 0) == $crc) {
+                        return true;
+                    }
+                } else {
+                    if (strtoupper($reply->Reply()) === strtoupper($data)) {
+                        return true;
+                    }
                 }
             }
         }
