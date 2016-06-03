@@ -858,7 +858,7 @@ class Network
             $write .= $data;
             $reply = $this->_sendPkt($command, $callback, $config, $write);
             if (is_object($reply)) {
-                if (strlen($reply->Reply()) == 8) {
+                if ((strlen($reply->Reply()) == 8) && ($command == "WRITE_FLASH")) {
                     $crc = 0;
                     foreach(str_split($reply->Reply(), 2) as $key => $value) {
                         $crc += (hexdec($value) << (8 * $key));
