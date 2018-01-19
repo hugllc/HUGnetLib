@@ -37,7 +37,7 @@
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.14.3
+* @version    Release: 0.14.8
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var DeviceConfigImageView = Backbone.View.extend({
@@ -118,7 +118,7 @@ var DeviceConfigImageView = Backbone.View.extend({
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.14.3
+* @version    Release: 0.14.8
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var DeviceConfigView = Backbone.View.extend({

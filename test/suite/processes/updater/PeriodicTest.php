@@ -50,7 +50,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.14.3
+ * @version    Release: 0.14.8
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class DriverTest extends \PHPUnit_Framework_TestCase
@@ -124,7 +124,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.14.3
+ * @version    Release: 0.14.8
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */

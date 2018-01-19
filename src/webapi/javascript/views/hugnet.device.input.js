@@ -37,7 +37,7 @@
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.14.3
+* @version    Release: 0.14.8
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var DeviceInputPropertiesView = Backbone.View.extend({
@@ -145,7 +145,7 @@ var DeviceInputPropertiesView = Backbone.View.extend({
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.14.3
+* @version    Release: 0.14.8
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var DeviceInputEntryView = Backbone.View.extend({
@@ -194,7 +194,7 @@ var DeviceInputEntryView = Backbone.View.extend({
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.14.3
+* @version    Release: 0.14.8
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.DeviceInputsView = Backbone.View.extend({

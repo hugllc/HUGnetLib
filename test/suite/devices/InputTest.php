@@ -58,7 +58,7 @@ require_once CODE_BASE."devices/inputTable/DriverInterface.php";
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.14.3
+ * @version    Release: 0.14.8
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class InputTest extends \PHPUnit_Framework_TestCase
@@ -830,7 +830,7 @@ namespace HUGnet\devices\inputTable\drivers;
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.14.3
+ * @version    Release: 0.14.8
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  *
@@ -886,7 +886,7 @@ class TestInputDriver1 extends \HUGnet\devices\inputTable\Driver
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.14.3
+ * @version    Release: 0.14.8
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  *

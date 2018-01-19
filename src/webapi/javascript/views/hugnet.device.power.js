@@ -37,7 +37,7 @@
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.14.3
+* @version    Release: 0.14.8
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var DevicePowerPropertiesView = Backbone.View.extend({
@@ -140,7 +140,7 @@ var DevicePowerPropertiesView = Backbone.View.extend({
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.14.3
+* @version    Release: 0.14.8
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 var DevicePowerEntryView = Backbone.View.extend({
@@ -189,7 +189,7 @@ var DevicePowerEntryView = Backbone.View.extend({
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2014 Hunt Utilities Group, LLC
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    Release: 0.14.3
+* @version    Release: 0.14.8
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 HUGnet.DevicePowersView = Backbone.View.extend({

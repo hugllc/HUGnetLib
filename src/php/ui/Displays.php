@@ -56,7 +56,7 @@ require_once dirname(__FILE__)."/Daemon.php";
  * @author     Jeff Liesmaki <jeffl@hugllc.com>
  * @copyright  2013 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.9.7
+ * @version    Release: 0.14.8
  * @link       http://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class Displays extends CLI

@@ -6,7 +6,7 @@ Homepage: http://dev.huglc.com/
 Version: %VERSION%
 Package: hugnetlib-webapi
 Architecture: all
-Depends: php5 (>= 5.3.2), php5-sqlite, hugnetlib (= %VERSION% ), php5-mysql,
+Depends: php (>= 5.3.2), php-sqlite, hugnetlib (= %VERSION% ), php-mysql,
     hugnetlib-js (= %VERSION% )
 Breaks: hugnetlib-rowebapi
 Recommends: apache2

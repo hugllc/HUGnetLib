@@ -49,7 +49,7 @@ require_once dirname(__FILE__)."/DriverInterface.php";
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.14.3
+ * @version    Release: 0.14.8
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class SVG extends \HUGnet\images\Driver 
