@@ -88,11 +88,11 @@ abstract class Driver extends DriverBase
         &$system, &$table, &$connect = null, $driver=null
     ) {
         \HUGnet\System::systemMissing(
-            get_class($this)." needs to be passed a system object",
+            " needs to be passed a system object",
             !is_object($system)
         );
         $system->fatalError(
-            get_class($this)." needs to be passed a table object",
+            " needs to be passed a table object",
             !is_object($table)
         );
         if (!is_a($connect, "ConnectionManager")) {

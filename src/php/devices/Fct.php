@@ -110,11 +110,11 @@ class Fct extends \HUGnet\base\Container
         &$system, $data=null, &$device = null, $fcts = null
     ) {
         \HUGnet\System::systemMissing(
-            get_class($this)." needs to be passed a system object",
+            " needs to be passed a system object",
             !is_object($system)
         );
         $system->fatalError(
-            get_class($this)." needs to be passed a device object",
+            " needs to be passed a device object",
             !is_object($device)
         );
         $object = new Fct($system, $data);
